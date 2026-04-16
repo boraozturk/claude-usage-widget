@@ -10,6 +10,8 @@ DEFAULT_CONFIG = {
     "refresh_seconds": 30,
     "osd_opacity": 0.75,
     "osd_scale": 1.0,
+    "notifications_enabled": True,
+    "notify_thresholds": [0.75, 0.90],
 }
 
 

@@ -35,6 +35,7 @@ except Exception:
     _DARK_APPEARANCE = None
 
 from claude_usage.collector import collect_all, UsageStats
+from claude_usage.notifier import UsageNotifier
 from claude_usage.overlay_macos import UsageOverlay
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), "icons", "claude-tray.svg")
@@ -382,6 +383,7 @@ class ClaudeUsageTray(rumps.App):
         self.popup  = UsagePopup()
         self.overlay = UsageOverlay(config)
         self.overlay.show_all()
+        self.notifier = UsageNotifier(config)
 
         # Kick off the first refresh
         self._do_refresh()
@@ -422,6 +424,7 @@ class ClaudeUsageTray(rumps.App):
 
         self.popup.update(stats)
         self.overlay.update(stats)
+        self.notifier.check_stats(stats)
 
     def _on_show_details(self, _):
         self.popup.show()

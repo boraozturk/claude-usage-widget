@@ -14,6 +14,7 @@ from gi.repository import Gtk, GLib, Gdk, Pango
 from gi.repository import AyatanaAppIndicator3 as AppIndicator
 
 from claude_usage.collector import collect_all, UsageStats
+from claude_usage.notifier import UsageNotifier
 from claude_usage.overlay import UsageOverlay
 
 
@@ -363,6 +364,7 @@ class ClaudeUsageTray:
         self.popup = UsagePopup(config)
         self.overlay = UsageOverlay(config)
         self.overlay.show_all()
+        self.notifier = UsageNotifier(config)
 
         self._refresh_async()
         GLib.timeout_add_seconds(config["refresh_seconds"], self._on_timer)
@@ -388,6 +390,7 @@ class ClaudeUsageTray:
 
         self.popup.update(stats)
         self.overlay.update(stats)
+        self.notifier.check_stats(stats)
         return False  # remove from idle queue
 
     def _on_timer(self):
